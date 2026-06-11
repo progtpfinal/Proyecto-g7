@@ -16,7 +16,18 @@ def leer_archivo():
                 datos[encabezados[i]] = valores[i]
 
             pacientes[id_paciente] = datos
+    return pacientes
 
-    print(pacientes["PT-175721"])
+def fecha_tratamiento_pacientes():
+    fechas=[]
+    pacientes=leer_archivo() #data_set (representado con un diccionario de diccionario)
+    for i in pacientes.values():#cada valor i es el valor del diccionario
+        fechas.append(i["treatment_start_date"])#agrega la fecha de cada dicc a la lista 
+        fechas.sort()#ordenamos las fechas de menor a mayor
+        dicc_cant_fecha={} 
+        for fecha in fechas:
+            dicc_cant_fecha[fecha]=dicc_cant_fecha.get(fecha,0)+1
+    return (dicc_cant_fecha) 
 
-leer_archivo()
+
+
