@@ -1,3 +1,5 @@
+import streamlit as st
+import matplotlib as plt
 def leer_archivo():
     pacientes = {}
 
@@ -18,9 +20,8 @@ def leer_archivo():
             pacientes[id_paciente] = datos
     return pacientes
 
-def fecha_tratamiento_pacientes():
-    fechas=[]
-    pacientes=leer_archivo() #data_set (representado con un diccionario de diccionario)
+def fecha_tratamiento_pacientes(pacientes):
+    fechas=[]  #data_set (representado con un diccionario de diccionario)
     for i in pacientes.values():#cada valor i es el valor del diccionario
         fechas.append(i["treatment_start_date"])#agrega la fecha de cada dicc a la lista 
         fechas.sort()#ordenamos las fechas de menor a mayor
@@ -30,4 +31,27 @@ def fecha_tratamiento_pacientes():
     return (dicc_cant_fecha) 
 
 
+def mostar_grafico(fechas):
 
+    fechas = fecha_tratamiento_pacientes()
+    primer_mes = {}
+
+    for clave, valor in list(fechas.items())[:10]:#tomamos las 10 primeras fehcas usando las slicings y el cambio de tipo.
+        primer_mes[clave] = valor
+
+    fig, ax = plt.subplots()
+    ax.plot(primer_mes.keys(), primer_mes.values(), marker="o")  # gráfico de línea
+    ax.set_title("Inicio de Tratamientos")
+    ax.set_xlabel("Fechas")
+    ax.set_ylabel("cantidad")
+
+    return fig
+    
+
+
+def main():
+    pacientes = leer_archivo()
+    fechas = fecha_tratamiento_pacientes(pacientes)
+    st.pyplot(mostar_grafico(fechas))
+    
+main()
