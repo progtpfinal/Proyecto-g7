@@ -20,27 +20,25 @@ def leer_archivo():
             pacientes[id_paciente] = datos
     return pacientes
 
-def fecha_tratamiento_pacientes(pacientes):
-    fechas=[]  
+def contar_pacientes_por_fecha(pacientes): #funcion refactorizada eliminacion del doble bucle
+    """
 
-    for i in pacientes.values():#cada valor i es el valor del diccionario
-        fechas.append(i["treatment_start_date"])#agrega la fecha de cada dicc a la lista 
+    """
 
-    fechas.sort()#ordenamos las fechas de menor a mayor
+    dicc_cant_fechas = {} 
 
-    dicc_cant_fecha={}
+    for paciente in pacientes.values():
+        fecha = paciente["treatment_start_date"]
+        dicc_cant_fechas[fecha] = dicc_cant_fechas.get(fecha, 0) + 1
 
-    for fecha in fechas:
-        dicc_cant_fecha[fecha]=dicc_cant_fecha.get(fecha,0)+1
-
-    return (dicc_cant_fecha) 
+    return dict(sorted(dicc_cant_fechas.items()))
 
 
 def mostar_grafico(fechas):
 
     primer_mes = {}
 
-    for clave, valor in list(fechas.items())[:10]:#tomamos las 10 primeras fehcas usando las slicings y el cambio de tipo.
+    for clave, valor in list(fechas.items())[::200]:#tomamos las 10 primeras fehcas usando las slicings y el cambio de tipo.
         primer_mes[clave] = valor
 
     fig, ax = plt.subplots()
@@ -58,7 +56,7 @@ def mostar_grafico(fechas):
 
 def main():
     pacientes = leer_archivo()
-    fechas = fecha_tratamiento_pacientes(pacientes)
+    fechas = contar_pacientes_por_fecha(pacientes)
     fig = mostar_grafico(fechas)
 
     st.pyplot(fig)
