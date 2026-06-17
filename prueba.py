@@ -1,6 +1,26 @@
 import streamlit as st
 import matplotlib.pyplot  as plt
 def leer_archivo()->dict:
+    """
+    archivo.txt : datos del archivo
+    proposito:
+    nuestra función toma los datos del archivo linea por linea,
+    con ellos toma la primer linea, tomando como referencia los datos
+    separados por coma para generar la cantidad de diccionarios que 
+    almacenaran los datos de cada persona, el primer diccionario toma
+    como clave la identificación el segundo toma como referencia el los
+    otros valores siguientes al primero como diccionarios internos, 
+    esto genera como resultado final un diccionario de diccionarios
+    para cada columna y fila recibida, esta función esta pensada
+    para recibir archivos ordenados y separados por comas.
+    
+    ejemplo sencillo de una idea:
+    contenido archivo:
+    1_ vendedor,casas,precio,tamaño
+    2_vendedor1,pequeña,5000,200M*2
+    devolución:
+    {vendedor1:{casas:pequeña,precio:5000,tamaño:200M*2}}
+    """
     pacientes = {}
 
     with open("drug_side_effects_10k.csv", "r") as archivo:
@@ -20,8 +40,15 @@ def leer_archivo()->dict:
             pacientes[id_paciente] = datos
     return pacientes
 
-def contar_pacientes_por_fecha(pacientes): #funcion refactorizada eliminacion del doble bucle
-
+def contar_pacientes_por_fecha(pacientes:dict)->dict: #funcion refactorizada eliminacion del doble bucle
+    """
+    fechas de pacientes ingresados:dict
+    proposito:
+    nuestra función recibe un diccionario con las fechas de nuestros pacientes
+    y nos devuelve un diccionario con todas las fechas ingresadas como claves en este,
+    y sus respectivas cantidades de pacientes como datos de cada fecha, además
+    tras obtener todas las fechas devuelve un diccionario ordenado con las fechas.
+    """
     dicc_cant_fechas = {} 
 
     for paciente in pacientes.values():
