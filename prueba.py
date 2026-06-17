@@ -1,6 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot  as plt
-def leer_archivo():
+def leer_archivo()->dict:
     pacientes = {}
 
     with open("drug_side_effects_10k.csv", "r") as archivo:
