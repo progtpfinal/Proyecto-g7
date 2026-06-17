@@ -1,3 +1,23 @@
+commit b59adf9e1ec9794e5411d9ccf0c8dcd516fb30e0
+Author: joseaugustovelazco-cyber <joseaugustovelazco@gmail.com>
+Date:   Wed Jun 17 23:25:07 2026 +0000
+
+    archivo historial
+
+commit 09554545c389450c33d852a8edc9937843d69545
+Merge: 6d1cfeb c4a603d
+Author: joseaugustovelazco-cyber <joseaugustovelazco@gmail.com>
+Date:   Wed Jun 17 23:24:17 2026 +0000
+
+    Merge branch 'main' of https://github.com/progtpfinal/Proyecto-g7
+
+commit c4a603d1f0fea4ffc2b0af6dc0aa5f67e4927cea
+Author: federicoli1989-cmyk <federicoli1989@gmail.com>
+Date:   Wed Jun 17 23:16:57 2026 +0000
+
+    "finalizacion de recetas "
+    "carga del historial al drive"
+
 commit 6d1cfeb3961ebfd90f81487f55aae9630d0606a1
 Author: joseaugustovelazco-cyber <joseaugustovelazco@gmail.com>
 Date:   Wed Jun 17 22:36:55 2026 +0000
