@@ -1,0 +1,99 @@
+commit 6d1cfeb3961ebfd90f81487f55aae9630d0606a1
+Author: joseaugustovelazco-cyber <joseaugustovelazco@gmail.com>
+Date:   Wed Jun 17 22:36:55 2026 +0000
+
+    funciona
+
+commit 17e00b82786d8a667e96ed0531cd8ca92ada480d
+Author: joseaugustovelazco-cyber <joseaugustovelazco@gmail.com>
+Date:   Wed Jun 17 21:50:37 2026 +0000
+
+    escribir las recetas de las funciones
+
+commit fa9a00c1ed0a389dbf0d933ed8030d45416503f9
+Author: joseaugustovelazco-cyber <joseaugustovelazco@gmail.com>
+Date:   Wed Jun 17 21:49:39 2026 +0000
+
+    escribir las recetas de las funciones
+
+commit 51aa097b8c3050e00a8c2ae4caa474cd0bee897b
+Author: Ldituro <106823851+LDituro@users.noreply.github.com>
+Date:   Wed Jun 17 14:12:37 2026 +0000
+
+    "mejora de visualizacion en las fechas"
+
+commit 3b199d80dd1a41dcba167810c04deef983d60017
+Author: Ldituro <106823851+LDituro@users.noreply.github.com>
+Date:   Sun Jun 14 14:07:24 2026 +0000
+
+    "cambios de grafico de mapas, agregado de contador
+    de casos fatales y severos
+    todo en archivo pruebass"
+
+commit 518fad7ed5b480973855a10943ccde8268273e8a
+Author: Ldituro <106823851+LDituro@users.noreply.github.com>
+Date:   Sun Jun 14 13:26:36 2026 +0000
+
+    "mapa y selectbox cunstruido
+    unificado en una grafica"
+
+commit 997bf08a8a3915899f519802149b06635824a657
+Author: Ldituro <106823851+LDituro@users.noreply.github.com>
+Date:   Sun Jun 14 12:15:56 2026 +0000
+
+    "cambio en la funcion fecha_tratamiento_paciente
+    eliminacion del doble bucle en la funcion
+    y cambio en mostrar_grafico
+    muestra un promedio"
+
+commit 423bce2d82f120a0632d5a37735e0277a085908e
+Author: Ldituro <106823851+LDituro@users.noreply.github.com>
+Date:   Thu Jun 11 12:48:59 2026 +0000
+
+    "correcicion de argumentos
+    y solucion de la visualizacion"
+
+commit 1df2541b8e8826ffd2152141495275e3c02b411e
+Author: joseaugustovelazco-cyber <joseaugustovelazco@gmail.com>
+Date:   Thu Jun 11 05:38:46 2026 +0000
+
+    "agrego la función de grafica, pendiente
+    resolver argumetos"
+
+commit 7d8b6c791176bc218d7505564a14ebaf83b6205d
+Author: federicoli1989-cmyk <federicoli1989@gmail.com>
+Date:   Thu Jun 11 04:58:54 2026 +0000
+
+    "agrego func de procesamiento"
+
+commit 6f69ef875b17f086152779d9eae5cd1efa84bb97
+Author: Ldituro <106823851+LDituro@users.noreply.github.com>
+Date:   Thu Jun 11 02:33:42 2026 +0000
+
+    "lectura y guardado de la informacion del archivo"
+
+commit bb74f5b0f773e138d6724f684133720724c30d01
+Author: progtpfinal <progtpfinal@gmail.com>
+Date:   Tue Jun 2 14:59:05 2026 +0000
+
+    creacion de archivo de prueba
+
+commit d9287184bb18b8acb2895d7dc89a0c535b5b71ca
+Author: progtpfinal <progtpfinal@gmail.com>
+Date:   Tue Jun 2 11:09:43 2026 -0300
+
+    Create requieremenst.txt
+
+commit 6a059ca28343c78f61f2489b9a9058cc017609f3
+Author: progtpfinal <progtpfinal@gmail.com>
+Date:   Tue Jun 2 11:07:54 2026 -0300
+
+    Add files via upload
+    
+    carga del archivo .csv
+
+commit 2ef32fab538878b060aafd0c64f9f836952ffdd2
+Author: progtpfinal <progtpfinal@gmail.com>
+Date:   Tue Jun 2 11:05:59 2026 -0300
+
+    Initial commit
