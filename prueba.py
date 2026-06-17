@@ -58,7 +58,11 @@ def contar_pacientes_por_fecha(pacientes:dict)->dict: #funcion refactorizada eli
     return dict(sorted(dicc_cant_fechas.items()))
 
 def mostar_grafico(fechas):
-
+    """
+    fechas:diccionario
+    nos muestra por pantalla los graficos que apareceran en nuestra
+    como una pantalla con los datos cargados, mostrando la 
+    representación elegida para cada respusta de pregunta."""
     registros_tratamiento = {}
 
     for clave, valor in list(fechas.items())[::200]:
@@ -98,9 +102,12 @@ def mostar_grafico(fechas):
     return fig
 
 def ubicacion_pacientes(pacientes,pais):
-    cordenadas = []
-    
+    """pacientes:diccionarios
+       pais:str
+       dado todos los pacientes y un pais devuelve una lista de dicc que tiene como clave lat y lon y 
+       como valor las coordenadas del paciente de ese pais """
 
+    cordenadas = []
     for paciente in pacientes.values():
         if paciente["country"] == pais:
 
@@ -109,7 +116,16 @@ def ubicacion_pacientes(pacientes,pais):
     
     return cordenadas
 
+
 def contar_casos_graves(pacientes, pais):
+    """
+    datos del paciente:dict
+    pais origen:str
+    nuestra función recibe el diccionario y se queda con los 
+    valores de pais severidad y recuperación del paciente,
+    con estos calcula dado el pais recibido por la selección
+    del usuario devolviendo una tupla con la cantidad de casos
+    fatales y casos severos"""
 
     severos = 0
     fatales = 0
