@@ -137,9 +137,10 @@ def contar_casos_graves(pacientes, pais):
             if paciente["severity"] == "Severe":
                 severos += 1
 
+                if paciente["outcome"] == "Fatal":
+                    fatales += 1
             elif paciente["outcome"] == "Fatal":
-                fatales += 1
-
+                    fatales += 1
     return severos, fatales
 
 def main():
