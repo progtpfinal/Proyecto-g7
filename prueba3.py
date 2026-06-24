@@ -58,15 +58,11 @@ def contar_pacientes_por_fecha(pacientes:dict)->dict:
     return dict(sorted(dicc_cant_fechas.items()))
 
 def mostar_grafico(fechas):
-    """
-    fechas:diccionario
-    nos muestra por pantalla los graficos que apareceran en nuestra
-    como una pantalla con los datos cargados, mostrando la 
-    representación elegida para cada respusta de pregunta."""
+
     registros_tratamiento = {}
 
     for clave, valor in list(fechas.items())[::200]:
-       registros_tratamiento[clave] = valor
+        registros_tratamiento[clave] = valor
 
     etiquetas = []
 
@@ -83,64 +79,35 @@ def mostar_grafico(fechas):
         linewidth=2
     )
 
-    ax.set_title("Inicio de Tratamientos")
-    ax.set_xlabel("Fechas")
-    ax.set_ylabel("Cantidades")
-
-    ax.set_xticks(range(len(registros_tratamiento)))
-
-    ax.set_xticklabels(
-        etiquetas,
-        rotation=0,
-        ha="right"
+    ax.fill_between(
+        range(len(registros_tratamiento)),
+        registros_tratamiento.values(),
+        alpha=0.3
     )
 
-    ax.grid(True, alpha=0.3)
+    ax.set_title(
+        "Evolución del Inicio de Tratamientos",
+        fontsize=14,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Fecha")
+    ax.set_ylabel("Cantidad de pacientes")
+
+    ax.set_xticks(range(len(registros_tratamiento)))
+    ax.set_xticklabels(etiquetas, rotation=45)
+
+    ax.grid(True, linestyle="--", alpha=0.4)
+
+    # Mostrar valores sobre cada punto
+    for i, valor in enumerate(registros_tratamiento.values()):
+        ax.text(i, valor + 1, str(valor), ha="center")
 
     plt.tight_layout()
 
     return fig
 
-def extraer_condiciones_pacientes(pacientes: dict):
-
-    resultados = {
-        "mujeres_cronicas": 0,
-        "hombres_cronicos": 0,
-        "mujeres_fumadoras": 0,
-        "hombres_fumadores": 0,
-        "mujeres_alcoholicas": 0,
-        "hombres_alcoholicos": 0
-    }
-
-    for paciente in pacientes.values():
-
-        es_mujer = paciente["gender"] == "Female"
-
-        if paciente["chronic_condition"]:
-            if es_mujer:
-                resultados["mujeres_cronicas"] += 1
-            else:
-                resultados["hombres_cronicos"] += 1
-
-        if paciente["smoker"] == "Yes":
-            if es_mujer:
-                resultados["mujeres_fumadoras"] += 1
-            else:
-                resultados["hombres_fumadores"] += 1
-
-        if paciente["alcohol_use"] == "Frequent":
-            if es_mujer:
-                resultados["mujeres_alcoholicas"] += 1
-            else:
-                resultados["hombres_alcoholicos"] += 1
-
-    return resultados
-
-def analizar_hospitalizaciones(pacientes: dict) -> dict:
-    """
-    Calcula cuántos pacientes hospitalizados presentan
-    distintos factores de riesgo.
-    """
+def obtener_estadisticas(pacientes: dict):
 
     resultados = {
         "Enf. Crónicas": 0,
@@ -148,66 +115,66 @@ def analizar_hospitalizaciones(pacientes: dict) -> dict:
         "Alcohol Frecuente": 0
     }
 
+    hospitalizados = {
+        "Enf. Crónicas": 0,
+        "Fumadores": 0,
+        "Alcohol Frecuente": 0
+    }
+
     for paciente in pacientes.values():
 
-        if paciente["hospitalized"] == "Yes":
+        estadisticas = {
+            "Enf. Crónicas": paciente["chronic_condition"] != "",
+            "Fumadores": paciente["smoker"] == "Yes",
+            "Alcohol Frecuente": paciente["alcohol_use"] == "Frequent"
+        }
 
-            if paciente["chronic_condition"] != "":
-                resultados["Enf. Crónicas"] += 1
+        for categoria, cumple_condicion in estadisticas.items():
 
-            if paciente["smoker"] == "Yes":
-                resultados["Fumadores"] += 1
+            if cumple_condicion:
+                resultados[categoria] += 1
 
-            if paciente["alcohol_use"] == "Frequent":
-                resultados["Alcohol Frecuente"] += 1
+                if paciente["hospitalized"] == "Yes":
+                    hospitalizados[categoria] += 1
 
-    return resultados
+    return resultados, hospitalizados
 
-def graficar_hospitalizaciones(datos: dict):
-    """
-    Genera un gráfico de barras con los factores
-    asociados a la hospitalización.
-    """
+def graficar_barras(datos: dict, titulo: str):  
 
     categorias = list(datos.keys())
     cantidades = list(datos.values())
 
     fig, ax = plt.subplots(figsize=(8, 5))
 
-    ax.bar(categorias, cantidades)
-
-    ax.set_title(
-        "Factores presentes en pacientes hospitalizados"
+    barras = ax.bar(
+        categorias,
+        cantidades,
+        color=["#4C72B0", "#55A868", "#C44E52"]
     )
 
-    ax.set_xlabel("Factor de riesgo")
-    ax.set_ylabel("Cantidad de hospitalizados")
+    # Agrega el valor arriba de cada barra
+    for barra in barras:
+        altura = barra.get_height()
 
-    plt.xticks(rotation=20)
+        ax.text(
+            barra.get_x() + barra.get_width()/2,
+            altura + 5,
+            f"{int(altura)}",
+            ha="center"
+        )
 
-    plt.tight_layout()
+    ax.set_title(
+        titulo,
+        fontsize=14,
+        fontweight="bold"
+    )
 
-    return fig
-
-def graficar_condiciones(datos: dict):
-    """
-    datos: dict
-    Recibe un diccionario con estadísticas de pacientes y
-    devuelve una figura de matplotlib con un gráfico de barras.
-    """
-
-    categorias = list(datos.keys())
-    cantidades = list(datos.values())
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-
-    ax.bar(categorias, cantidades)
-
-    ax.set_title("Condiciones de los pacientes")
     ax.set_xlabel("Categorías")
-    ax.set_ylabel("Cantidad")
+    ax.set_ylabel("Cantidad de pacientes")
 
-    ax.set_xticklabels(categorias, rotation=45, ha="right")
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+
+    plt.xticks(rotation=15)
 
     plt.tight_layout()
 
@@ -258,13 +225,6 @@ def main():
 
     fechas = contar_pacientes_por_fecha(pacientes)
     fig = mostar_grafico(fechas)
-
-    condiciones = extraer_condiciones_pacientes(pacientes)
-    fig_condiciones = graficar_condiciones(condiciones)
-
-    hospitalizaciones = analizar_hospitalizaciones(pacientes)
-    fig_hospitalizaciones = graficar_hospitalizaciones(hospitalizaciones)
-
     
     pais = st.selectbox(
         "selecione un pais",
@@ -273,8 +233,12 @@ def main():
     )
 
     cordenadas_pais = ubicacion_pacientes(pacientes, pais)
-
     severos, fatales = contar_casos_graves(pacientes, pais)
+
+    
+    datos_generales, datos_hospitalizados = obtener_estadisticas(pacientes)
+    fig1 = graficar_barras(datos_generales,"Condiciones de todos los pacientes")
+    fig2 = graficar_barras(datos_hospitalizados,"Factores presentes en pacientes hospitalizados")
 
 
     col1, col2, col3 = st.columns(3)
@@ -291,15 +255,10 @@ def main():
         st.subheader("Inicio de Tratamientos")
         st.pyplot(fig)
 
-        st.subheader("Condiciones Generales")
-        st.pyplot(fig_condiciones)
 
-    with col3:
-
-        st.subheader(
-        "Hospitalización y Factores de Riesgo")
-
-        st.pyplot(fig_hospitalizaciones)
+    with col3: 
+        st.pyplot(fig1)
+        st.pyplot(fig2)
 
 if __name__=="__main__":
     main()
