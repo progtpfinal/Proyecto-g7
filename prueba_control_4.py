@@ -305,8 +305,7 @@ def graficar_dosis_por_medicamento(resultados: dict):
 
     return fig
 
-def crear_grafico_torta(medicamento):
-    pacientes = leer_archivo()
+def crear_grafico_torta(medicamento,pacientes):
     porcentajes = calcular_Porcentaje(medicamento, pacientes)
     lista_efectsec = list(porcentajes.keys()) #lista con los efectos secundarios
     lista_porcentaje = list(porcentajes.values()) #lista con el porcentaje
@@ -385,7 +384,7 @@ def main():
          "Insulin","Lisinopril","Metformin","Omeprazole",
          "Paracetamol","Sertraline"])
 
-    fig_torta = crear_grafico_torta(medicamento)
+    fig_torta = crear_grafico_torta(medicamento,pacientes)
     cordenadas_pais = ubicacion_pacientes(pacientes,pais)
     severos , fatales = contar_casos_graves(pacientes, pais)
 
