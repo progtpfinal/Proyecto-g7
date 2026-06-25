@@ -57,8 +57,6 @@ def contar_pacientes_por_fecha(pacientes:dict)->dict: #funcion refactorizada eli
 
     return dict(sorted(dicc_cant_fechas.items()))
 
-
-
 def mostar_grafico(fechas):
     """
     fechas:diccionario
