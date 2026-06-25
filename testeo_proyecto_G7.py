@@ -1,4 +1,4 @@
-from prueba import *
+from prueba_control_4 import *
 
 
 #testeos de pregunta 6:
