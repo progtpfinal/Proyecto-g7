@@ -322,8 +322,8 @@ def seguro(dia):
         respuesta = 0
     return respuesta
 
-def guardar_datos():
-    pacientes = leer_archivo()
+def guardar_datos(pacientes):
+    
     dicc_cant_fechas = {}
 
     for paciente in pacientes.values():
@@ -391,7 +391,7 @@ def main():
 
     #Llamado de funciones de resolucion de pregunta 5:
 
-    promedios = guardar_datos()
+    promedios = guardar_datos(pacientes)
     edad = st.slider("Selecciona una edad", min_value=18, max_value=90, step=1, value=30)
     fig_recuperacion = mostrar_grafico_recuperacion(edad, promedios)
 
