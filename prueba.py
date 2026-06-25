@@ -145,6 +145,39 @@ def contar_casos_graves(pacientes, pais):
                     fatales += 1
     return severos, fatales
 
+
+
+
+def calcular_Porcentaje(medicamento,pacientes):
+    total=0 #cant de pacientes que tomaron ese medicamento
+    efectos={}#un dicc tiene como clave los efectos secund y como valor la cant de pacientes con ese efecto secund  
+    for paciente in pacientes.values():
+        if paciente["drug_name"]==medicamento:
+            total=total+1
+            efecto=paciente["side_effect"]#guardamos en una variable el efect secundario de ese paciente 
+            if not efecto in efectos:
+                efectos[efecto]=1 #si no esta lo agrego como clave y al valor lo inicializo en 1
+            else:
+                efectos[efecto]+=1 
+    for efecto in efectos:
+        efectos[efecto]=efectos[efecto]*100/total #modificamos el valor donde va a tener como valor el porcentaje de ese efecto (cant personas con ese efecto *100/total de personas con ese medicamento)
+    
+    return efectos #devuelve un dicc que tiene como clave los efectos secund y como valor su porcentaje 
+    
+
+
+
+def crear_grafico_torta(medicamento):
+    pacientes = leer_archivo()
+    porcentajes = calcular_Porcentaje(medicamento, pacientes)
+    lista_efectsec = list(porcentajes.keys()) #lista con los efectos secundarios
+    lista_porcentaje = list(porcentajes.values()) #lista con el porcentaje
+    fig, ax = plt.subplots() #crea la figura
+    ax.pie(lista_porcentaje,labels=lista_efectsec,autopct='%1.1f%%')
+    ax.set_title(f"Efectos secundarios de {medicamento}")
+    return fig
+
+
 def main():
     pacientes = leer_archivo()
 
@@ -154,25 +187,36 @@ def main():
     pais = st.selectbox("selecione un pais",
                         ["Australia","Canada","Germany","India",
                          "Pakistan","UK","USA"])
+    medicamento = st.selectbox("Seleccione un medicamento",
+        ["Amlodipine","Amoxicillin","Atorvastatin","Ibuprofen",
+         "Insulin","Lisinopril","Metformin","Omeprazole",
+         "Paracetamol","Sertraline"])
+
+    fig_torta = crear_grafico_torta(medicamento)
     
     cordenadas_pais = ubicacion_pacientes(pacientes,pais)
     
     severos , fatales = contar_casos_graves(pacientes, pais)
 
-    col1, col2 = st.columns(2)#considerar hacerlo por pestanias 
+    col1, col2, col3 = st.columns(3)#considerar hacerlo por pestanias
+
     with col1:
-
         st.subheader("Información de ",pais)
-
         st.metric("Severos", severos)
 
         st.metric("Fatales", fatales)
 
-    st.map(cordenadas_pais)
+        st.map(cordenadas_pais)
 
     with col2:
         st.subheader("Grafico")
         st.pyplot(fig)
+    
+    with col3:
+        st.subheader("Efectos secundarios")
+        st.pyplot(fig_torta)
+
+    st.map(cordenadas_pais)
     
 if __name__=="__main__":
     main()
