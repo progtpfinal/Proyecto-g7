@@ -57,8 +57,6 @@ def contar_pacientes_por_fecha(pacientes:dict)->dict: #funcion refactorizada eli
 
     return dict(sorted(dicc_cant_fechas.items()))
 
-
-
 def mostar_grafico(fechas):
     """
     fechas:diccionario
@@ -164,18 +162,6 @@ def calcular_Porcentaje(medicamento,pacientes):
     
     return efectos #devuelve un dicc que tiene como clave los efectos secund y como valor su porcentaje 
     
-
-
-
-def crear_grafico_torta(medicamento):
-    pacientes = leer_archivo()
-    porcentajes = calcular_Porcentaje(medicamento, pacientes)
-    lista_efectsec = list(porcentajes.keys()) #lista con los efectos secundarios
-    lista_porcentaje = list(porcentajes.values()) #lista con el porcentaje
-    fig, ax = plt.subplots() #crea la figura
-    ax.pie(lista_porcentaje,labels=lista_efectsec,autopct='%1.1f%%')
-    ax.set_title(f"Efectos secundarios de {medicamento}")
-    return fig
 
 
 def main():
