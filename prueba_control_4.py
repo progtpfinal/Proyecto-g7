@@ -269,8 +269,7 @@ def graficar_dosis_por_medicamento(resultados: dict):
 
     # asignamos un color por medicamento
     lista_medicamentos = list(resultados.keys())
-    cmap = plt.cm.get_cmap("tab10")  # paleta de colores
-
+    cmap = plt.colormaps["tab10"]
     color_map = {
         med: cmap(i % 10)
         for i, med in enumerate(lista_medicamentos)
