@@ -57,8 +57,6 @@ def contar_pacientes_por_fecha(pacientes:dict)->dict: #funcion refactorizada eli
 
     return dict(sorted(dicc_cant_fechas.items()))
 
-
-
 def mostar_grafico(fechas):
     """
     fechas:diccionario
@@ -118,7 +116,6 @@ def ubicacion_pacientes(pacientes,pais):
     
     return cordenadas
 
-
 def contar_casos_graves(pacientes, pais):
     """
     datos del paciente:dict
@@ -145,9 +142,6 @@ def contar_casos_graves(pacientes, pais):
                     fatales += 1
     return severos, fatales
 
-
-
-
 def calcular_Porcentaje(medicamento,pacientes):
     total=0 #cant de pacientes que tomaron ese medicamento
     efectos={}#un dicc tiene como clave los efectos secund y como valor la cant de pacientes con ese efecto secund  
@@ -164,8 +158,152 @@ def calcular_Porcentaje(medicamento,pacientes):
     
     return efectos #devuelve un dicc que tiene como clave los efectos secund y como valor su porcentaje 
     
+def obtener_estadisticas(pacientes: dict):
 
+    resultados = {
+        "Enf. Crónicas": 0,
+        "Fumadores": 0,
+        "Alcohol Frecuente": 0
+    }
 
+    hospitalizados = {
+        "Enf. Crónicas": 0,
+        "Fumadores": 0,
+        "Alcohol Frecuente": 0
+    }
+
+    for paciente in pacientes.values():
+
+        estadisticas = {
+            "Enf. Crónicas": paciente["chronic_condition"] != "",
+            "Fumadores": paciente["smoker"] == "Yes",
+            "Alcohol Frecuente": paciente["alcohol_use"] == "Frequent"
+        }
+
+        for categoria, cumple_condicion in estadisticas.items():
+
+            if cumple_condicion:
+                resultados[categoria] += 1
+
+                if paciente["hospitalized"] == "Yes":
+                    hospitalizados[categoria] += 1
+
+    return resultados, hospitalizados
+
+def graficar_barras(datos: dict, titulo: str):  
+
+    categorias = list(datos.keys())
+    cantidades = list(datos.values())
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+
+    barras = ax.bar(
+        categorias,
+        cantidades,
+        color=["#4C72B0", "#55A868", "#C44E52"]
+    )
+
+    # Agrega el valor arriba de cada barra
+    for barra in barras:
+        altura = barra.get_height()
+
+        ax.text(
+            barra.get_x() + barra.get_width()/2,
+            altura + 5,
+            f"{int(altura)}",
+            ha="center"
+        )
+
+    ax.set_title(
+        titulo,
+        fontsize=14,
+        fontweight="bold"
+    )
+
+    ax.set_xlabel("Categorías")
+    ax.set_ylabel("Cantidad de pacientes")
+
+    ax.grid(axis="y", linestyle="--", alpha=0.4)
+
+    plt.xticks(rotation=15)
+
+    plt.tight_layout()
+
+    return fig
+
+def contar_hospitalizados_por_dosis(pacientes: dict):
+    
+    resultados = {}
+
+    for paciente in pacientes.values():
+
+        medicamento = paciente["drug_name"]
+        dosis = paciente["dosage_mg"]
+        estado = paciente["outcome"]
+
+        if estado == "Hospitalized":
+
+            if medicamento not in resultados:
+                resultados[medicamento] = {}
+
+            if dosis not in resultados[medicamento]:
+                resultados[medicamento][dosis] = 0
+
+            resultados[medicamento][dosis] += 1
+
+    return resultados
+
+def graficar_dosis_por_medicamento(resultados: dict):
+    """
+    Scatter plot:
+    - eje x: medicamento
+    - eje y: dosis (mg)
+    - color: medicamento
+    - tamaño: cantidad de hospitalizados
+    """
+
+    x = []
+    y = []
+    colores = []
+    tamanios = []
+
+    # asignamos un color por medicamento
+    lista_medicamentos = list(resultados.keys())
+    cmap = plt.cm.get_cmap("tab10")  # paleta de colores
+
+    color_map = {
+        med: cmap(i % 10)
+        for i, med in enumerate(lista_medicamentos)
+    }
+
+    for medicamento, dosis_dict in resultados.items():
+        for dosis, cantidad in dosis_dict.items():
+            x.append(medicamento)
+            y.append(dosis)
+            colores.append(color_map[medicamento])
+            tamanios.append(cantidad * 80)  # escala del tamaño
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    ax.scatter(
+        x,
+        y,
+        c=colores,
+        s=tamanios,
+        alpha=0.7,
+        edgecolors="black"
+    )
+
+    ax.set_xlabel("Medicamento")
+    ax.set_ylabel("Dosis (mg)")
+    ax.set_title("Hospitalizados por medicamento y dosis")
+
+    ax.tick_params(axis='x', rotation=45)
+    ax.grid(True, linestyle="--", alpha=0.5)
+
+    fig.tight_layout()
+
+    return fig
 
 def crear_grafico_torta(medicamento):
     pacientes = leer_archivo()
@@ -177,16 +315,12 @@ def crear_grafico_torta(medicamento):
     ax.set_title(f"Efectos secundarios de {medicamento}")
     return fig
 
-#funciones resolucion 5:
-
 def seguro(dia):
     if dia != '':
         respuesta = float(dia)
     else:
         respuesta = 0
     return respuesta
-
-
 
 def guardar_datos():
     pacientes = leer_archivo()
@@ -205,7 +339,6 @@ def guardar_datos():
         dicc_cant_fechas[promedios] =  dicc_cant_fechas[promedios]["suma_dias"]//dicc_cant_fechas[promedios]["contador"]
     return dict(sorted(dicc_cant_fechas.items()))
 
-
 def obtener_edades_y_promedios(edad, promedios):
     """
     Devuelve dos listas:
@@ -219,8 +352,6 @@ def obtener_edades_y_promedios(edad, promedios):
             edades.append(e)           
             dias.append(promedios[e])     
     return edades, dias
-
-
 
 def mostrar_grafico_recuperacion(edad,promedios):
     edades,dias = obtener_edades_y_promedios(edad,promedios)
@@ -264,6 +395,14 @@ def main():
     edad = st.slider("Selecciona una edad", min_value=18, max_value=90, step=1, value=30)
     fig_recuperacion = mostrar_grafico_recuperacion(edad, promedios)
 
+    datos_generales, datos_hospitalizados = obtener_estadisticas(pacientes)
+    fig1 = graficar_barras(datos_generales,"Condiciones de todos los pacientes")
+    fig2 = graficar_barras(datos_hospitalizados,"Factores presentes en pacientes hospitalizados")
+
+    datos_dosis = contar_hospitalizados_por_dosis(pacientes)
+    fig3 = graficar_dosis_por_medicamento(datos_dosis)
+
+
     #cuadros en nuestro diseño de pagina
     col1, col2, col3, col4 = st.columns(4)
 
@@ -276,14 +415,19 @@ def main():
     with col2:
         st.subheader("Gráfico de tratamientos")
         st.pyplot(fig)
-
+        st.subheader("grafico de condiciones pacientes")
+        st.pyplot(fig1)
     with col3:
         st.subheader("Efectos secundarios")
         st.pyplot(fig_torta)
+        st.subheader("grafico de pacientes enfermos")
+        st.pyplot(fig2)
 
     with col4:
         st.subheader("Recuperación por edad")
         st.pyplot(fig_recuperacion)
+        st.subheader("pacientes hospitalizados por dosis")
+        st.pyplot(fig3)
 
 if __name__=="__main__":
     main()

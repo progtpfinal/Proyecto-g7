@@ -180,45 +180,79 @@ def graficar_barras(datos: dict, titulo: str):
 
     return fig
 
-def ubicacion_pacientes(pacientes,pais):
-    """pacientes:diccionarios
-       pais:str
-       dado todos los pacientes y un pais devuelve una lista de dicc que tiene como clave lat y lon y 
-       como valor las coordenadas del paciente de ese pais """
-
-    cordenadas = []
-    for paciente in pacientes.values():
-        if paciente["country"] == pais:
-
-            cordenadas.append({"lat" : float(paciente["capital_lat"]),
-                           "lon" : float(paciente["capital_lon"])})
+def contar_hospitalizados_por_dosis(pacientes: dict):
     
-    return cordenadas
-
-def contar_casos_graves(pacientes, pais):
-    """
-    datos del paciente:dict
-    pais origen:str
-    nuestra función recibe el diccionario y se queda con los 
-    valores de pais severidad y recuperación del paciente,
-    con estos calcula dado el pais recibido por la selección
-    del usuario devolviendo una tupla con la cantidad de casos
-    fatales y casos severos"""
-
-    severos = 0
-    fatales = 0
+    resultados = {}
 
     for paciente in pacientes.values():
 
-        if paciente["country"] == pais:
+        medicamento = paciente["drug_name"]
+        dosis = paciente["dosage_mg"]
+        estado = paciente["outcome"]
 
-            if paciente["severity"] == "Severe":
-                severos += 1
+        if estado == "Hospitalized":
 
-            if paciente["outcome"] == "Fatal":
-                fatales += 1
+            if medicamento not in resultados:
+                resultados[medicamento] = {}
 
-    return severos, fatales
+            if dosis not in resultados[medicamento]:
+                resultados[medicamento][dosis] = 0
+
+            resultados[medicamento][dosis] += 1
+
+    return resultados
+
+def graficar_dosis_por_medicamento(resultados: dict):
+    """
+    Scatter plot:
+    - eje x: medicamento
+    - eje y: dosis (mg)
+    - color: medicamento
+    - tamaño: cantidad de hospitalizados
+    """
+
+    x = []
+    y = []
+    colores = []
+    tamanios = []
+
+    # asignamos un color por medicamento
+    lista_medicamentos = list(resultados.keys())
+    cmap = plt.cm.get_cmap("tab10")  # paleta de colores
+
+    color_map = {
+        med: cmap(i % 10)
+        for i, med in enumerate(lista_medicamentos)
+    }
+
+    for medicamento, dosis_dict in resultados.items():
+        for dosis, cantidad in dosis_dict.items():
+            x.append(medicamento)
+            y.append(dosis)
+            colores.append(color_map[medicamento])
+            tamanios.append(cantidad * 80)  # escala del tamaño
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    ax.scatter(
+        x,
+        y,
+        c=colores,
+        s=tamanios,
+        alpha=0.7,
+        edgecolors="black"
+    )
+
+    ax.set_xlabel("Medicamento")
+    ax.set_ylabel("Dosis (mg)")
+    ax.set_title("Hospitalizados por medicamento y dosis")
+
+    ax.tick_params(axis='x', rotation=45)
+    ax.grid(True, linestyle="--", alpha=0.5)
+
+    fig.tight_layout()
+
+    return fig
 
 def main():
     pacientes = leer_archivo()
@@ -240,6 +274,9 @@ def main():
     fig1 = graficar_barras(datos_generales,"Condiciones de todos los pacientes")
     fig2 = graficar_barras(datos_hospitalizados,"Factores presentes en pacientes hospitalizados")
 
+    datos_dosis = contar_hospitalizados_por_dosis(pacientes)
+    fig3 = graficar_dosis_por_medicamento(datos_dosis)
+    
 
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -254,6 +291,8 @@ def main():
 
         st.subheader("Inicio de Tratamientos")
         st.pyplot(fig)
+        st.subheader("Pacientes Hospitalizados por dosis")
+        st.pyplot(fig3)
 
 
     with col3: 
