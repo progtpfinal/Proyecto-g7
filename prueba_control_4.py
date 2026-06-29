@@ -1,5 +1,10 @@
 import streamlit as st
 import matplotlib.pyplot  as plt
+
+#_________________________________________________________________________________________________________
+
+#APERTURA DEL ARCHIVO
+
 def leer_archivo()->dict:
     """
     archivo.txt : datos del archivo
@@ -39,6 +44,16 @@ def leer_archivo()->dict:
 
             pacientes[id_paciente] = datos
     return pacientes
+
+#_________________________________________________________________________________________________________
+
+#FUNCIONES DE PREGUNTA 1(ESTÁTICA):
+#PREGUNTA:
+#¿QUÉ DÍA HUBO MÁS PERSONAS INICIANDO EL TRATAMIENTO?  
+#RESOLUCIÓN:   
+#NUESTRA FUNCIÓN GENERA UN GRAFICO DE BARRAS MOSTRANDO LAS DIFERENTES FECHAS CON FECHAS SALTEADAS,
+#CON LAS RESPECTIVAS CANTIDADES DE PERSONAS QUE SE INGRESARON ESA FECHA DEL AÑO ALREDEDOR DEL MUNDO.
+
 
 def contar_pacientes_por_fecha(pacientes:dict)->dict: #funcion refactorizada eliminacion del doble bucle
     """
@@ -101,48 +116,27 @@ def mostar_grafico(fechas):
 
     return fig
 
-def ubicacion_pacientes(pacientes,pais):
-    """pacientes:diccionarios
-       pais:str
-       dado todos los pacientes y un pais devuelve una lista de dicc que tiene como clave lat y lon y 
-       como valor las coordenadas del paciente de ese pais """
 
-    cordenadas = []
-    for paciente in pacientes.values():
-        if paciente["country"] == pais:
+#_________________________________________________________________________________________________________
+#FUNCIONES DE PREGUNTA 2 (DINÁMICA):
+#PREGUNTA:
+#¿CUALES SON LOS EFECTOS SECUNDARIOS DE CIERTOS MEDICAMENTOS?
+#SOLUCIÓN:
+#PARA LA RESOLUCIÓN DE ESTA PREGUNTA SE ELIGIO REPRESENTAR LA SOLUCIÓN MEDIANTE UN GRÁFICO DE TORTAS
+#QUE NOS MUESTRE LOS PORCENTAJES DE CADA MEDICAMENTO, ESTE VA A PODER SER SELECCIONADO POR UNA INTERFAZ
+#DONDE APARECERAN TODOS LOS MEDICAMENTOS Y AL SELECCIONAR UNO EL GRÁFICO CAMBIARA MOSTRANDO LOS EFECTOS 
+#SECUNDARIOS DE ESTE.
 
-            cordenadas.append({"lat" : float(paciente["capital_lat"]),
-                           "lon" : float(paciente["capital_lon"])})
-    
-    return cordenadas
 
-def contar_casos_graves(pacientes, pais):
+def calcular_Porcentaje(medicamento:str,pacientes:dict)->dict:
     """
-    datos del paciente:dict
-    pais origen:str
-    nuestra función recibe el diccionario y se queda con los 
-    valores de pais severidad y recuperación del paciente,
-    con estos calcula dado el pais recibido por la selección
-    del usuario devolviendo una tupla con la cantidad de casos
-    fatales y casos severos"""
-
-    severos = 0
-    fatales = 0
-
-    for paciente in pacientes.values():
-
-        if paciente["country"] == pais:
-
-            if paciente["severity"] == "Severe":
-                severos += 1
-
-                if paciente["outcome"] == "Fatal":
-                    fatales += 1
-            elif paciente["outcome"] == "Fatal":
-                    fatales += 1
-    return severos, fatales
-
-def calcular_Porcentaje(medicamento,pacientes):
+    datos reales:
+    medicamento ingresado:str
+    información de pacientes:dict
+    proposito:
+    recibe un diccionario y un medicamento y devuelve un diccionario que 
+    contiene los efectos secundarios del medicamento recibido como clave
+    y como valor tiene los porcentajes de cada uno de estos efectos secundarios."""
     total=0 #cant de pacientes que tomaron ese medicamento
     efectos={}#un dicc tiene como clave los efectos secund y como valor la cant de pacientes con ese efecto secund  
     for paciente in pacientes.values():
@@ -158,8 +152,45 @@ def calcular_Porcentaje(medicamento,pacientes):
     
     return efectos #devuelve un dicc que tiene como clave los efectos secund y como valor su porcentaje 
     
-def obtener_estadisticas(pacientes: dict):
 
+
+def crear_grafico_torta(medicamento:str,pacientes:dict):
+    """
+    datos reales:
+    medicamento ingresado:str
+    información de pacientes:dict
+    proposito:
+    nos muestra por pantalla el grafico obtenido con los porcentajes de
+    efectos secundarios que tiene el medicamento ingresado."""
+    porcentajes = calcular_Porcentaje(medicamento, pacientes)
+    lista_efectsec = list(porcentajes.keys()) #lista con los efectos secundarios
+    lista_porcentaje = list(porcentajes.values()) #lista con el porcentaje
+    fig, ax = plt.subplots() #crea la figura
+    ax.pie(lista_porcentaje,labels=lista_efectsec,autopct='%1.1f%%')
+    ax.set_title(f"Efectos secundarios de {medicamento}")
+    return fig
+
+
+#_________________________________________________________________________________________________________
+#FUNCIONES DE PREGUNTA 3 (ESTÁTICA):
+#PREGUNTA:
+#¿SEGÚN LOS HÁBITOS Y CONDICIONES, DE QUE MANERA INFLUYEN EN EL ÍNDICE DE HOSPITALIZACIÓN?
+#SOLUCIÓN:
+#PARA RESOLVER LA PREGUNTA SE PENSO EN LA CREACIÓN DE DOS GRAFICOS DE BARRA COMPARANDO LAS CONDIONES
+#DE LOS PACIENTES, EN ELLOS MOSTRANDO LA CANTIDAD DE PACIENTES CON ESAS CONDICIONES INDICANDO SI FUERON
+#HOSPITALIZADAS.
+
+
+def obtener_estadisticas(pacientes: dict)->tuple:
+    """
+    información del paciente:dict
+    datos estadisticos:tuple(dict,dict):
+    proposito:
+    nos calcula la cantidad de pacientes con diferentes condiones de habitos
+    de salud y nos muestra si fueron hospitalizados o no, devolviendo los resultados
+    sin contemplar la hospitalización, como una que si la contempla, en dos diccionarios
+    distintos devolviendo una tupla con estos diccionarios.
+    """
     resultados = {
         "Enf. Crónicas": 0,
         "Fumadores": 0,
@@ -191,6 +222,14 @@ def obtener_estadisticas(pacientes: dict):
     return resultados, hospitalizados
 
 def graficar_barras(datos: dict, titulo: str):  
+    """datos reales:
+    datos estadisticos:dict
+    titulo del grafico:str
+    proposito:
+    grafica barras comparativas usando el diccionario recibido, como insertando un titulo
+    a la grafica dibujada mostrando por pantalla las comparaciones de resultados al comparar
+    los niveles de las barras y las cantidades que contienen.
+    """
 
     categorias = list(datos.keys())
     cantidades = list(datos.values())
@@ -231,7 +270,25 @@ def graficar_barras(datos: dict, titulo: str):
 
     return fig
 
-def contar_hospitalizados_por_dosis(pacientes: dict):
+#_________________________________________________________________________________________________________
+#FUNCIONES DE PREGUNTA 4 (ESTÁTICA):
+#PREGUNTA:
+#¿LA DOSIS SUMINISTRADA INFLUYE EN LA SEVERIDAD PRESENTADA POR EL PACIENTE?
+#RESOLUCIÓN:
+#PARA RESPONDER A LA PREGUNTA SE ELIGIO MOSTRAR UN GRAFICO DE DISPERSIÓN DE PUNTOS
+#PARA MOSTRAR, ACORDE EL TAMAÑO DEL PUNTO, LA DOSIS SUMINISTRADA DE CADA MEDICAMENTO.
+
+
+def contar_hospitalizados_por_dosis(pacientes: dict)->dict:
+    """
+    datos reales:
+    datos de los pacientes:dict
+    proposito:
+    nuestra función recibe un diccionario con los pacientes, y nos calcula
+    acorde el medicamento, la dosis y el estado la cantidad de personas
+    que padecen de condiciones similares, verificando si esta hospitalizado
+    para contarlo como valido.
+    """
     
     resultados = {}
 
@@ -255,6 +312,14 @@ def contar_hospitalizados_por_dosis(pacientes: dict):
 
 def graficar_dosis_por_medicamento(resultados: dict):
     """
+    datos reales:
+    diccionario con los datos de hospitalización:dict
+    proposito:
+    nuestra función crea en base a los resultados obtenidos de hospitalización
+    por dosis un gráfico de dispersión de puntos, que en base a la cantidad de
+    personas que tengan esas condiciones dado el medicamento y esa dosis el 
+    tamaño del punto generado en la grafica.
+    
     Scatter plot:
     - eje x: medicamento
     - eje y: dosis (mg)
@@ -304,24 +369,51 @@ def graficar_dosis_por_medicamento(resultados: dict):
 
     return fig
 
-def crear_grafico_torta(medicamento,pacientes):
-    porcentajes = calcular_Porcentaje(medicamento, pacientes)
-    lista_efectsec = list(porcentajes.keys()) #lista con los efectos secundarios
-    lista_porcentaje = list(porcentajes.values()) #lista con el porcentaje
-    fig, ax = plt.subplots() #crea la figura
-    ax.pie(lista_porcentaje,labels=lista_efectsec,autopct='%1.1f%%')
-    ax.set_title(f"Efectos secundarios de {medicamento}")
-    return fig
+#______________________________________________________________________________________________
 
-def seguro(dia):
+#FUNCIONES DE PREGUNTA 5 (DINÁMICA):
+
+#¿LA EDAD INFLUYE EN EL ÍNDICE PROMEDIO DE RECUPERACIÓN DE LOS PACIENTES?
+#SOLUCION:
+#SE PENSO EN LA CREACIÓN DE UN GRÁFICO DE BARRAS QUE CAMBIE A MEDIDA QUE EN UN SLIDER
+#SE SELECCIONE UNA EDAD, GENERANDO GRAFICAS COMPARATIVAS CON ESE DATO, PARA MOSTRAR
+#LOS PROMEDIOS DE DÍAS DE RECUPERACIÓN QUE TIENE ESA EDAD SELECCIONADA.
+
+def seguro(dia:str)->float:
+    """
+    dato reeal recibido y interpretado por la maquina:
+    fechas en numeros o un guion indicando los dias:float
+    proposito:
+    nuestra función recibe un valor que representa una fecha y nos devuelve un numero float
+    verificando si esta fecha es vacia o es un numero devolviendo 0 en caso de vacio y el mismo en
+    otro caso haciendo la conversion a float.
+    seguro("")==0
+    seguro("14")==14
+    seguro("3")==3
+    seguro("")==0
+    """
     if dia != '':
         respuesta = float(dia)
     else:
         respuesta = 0
     return respuesta
 
-def guardar_datos(pacientes):
-    
+def guardar_datos(pacientes:dict)->dict:
+    """
+    datos reales interpretados en la maquina:
+    datos del paciente:dict
+    proposito:
+    nuestra funcion toma los datos del diccionario con los datos del paciente y se queda con los volores de edad
+    y dias de recuperacion del paciente, devolviendo un diccionario con las claves como edades y su promedio como valor
+     dentro del diccionario, que indica los dias de recuperación. 
+    guardar_datos(
+    {'PT-161882': {'age': '49', 'gender': 'Male', 'country': 'UK', 'drug_name': 'Amoxicillin', 'dosage_mg': '20', 'side_effect': 'Diarrhea', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2023-09-30', 'treatment_start_date': '2023-09-17', 'chronic_condition': 'Kidney Disease', 'smoker': 'No', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '7.0', 'capital_lat': '51.5074', 'capital_lon': '-0.1278'},
+      'PT-136859': {'age': '59', 'gender': 'Male', 'country': 'Canada', 'drug_name': 'Sertraline', 'dosage_mg': '25', 'side_effect': 'Insomnia', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2025-01-03', 'treatment_start_date': '2024-12-05', 'chronic_condition': 'Diabetes', 'smoker': 'Yes', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '10.0', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'}, 
+    'PT-127581': {'age': '18', 'gender': 'Male', 'country': 'USA', 'drug_name': 'Sertraline', 'dosage_mg': '25', 'side_effect': 'Dry Mouth', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2024-02-19', 'treatment_start_date': '2024-01-04', 'chronic_condition': 'Hypertension', 'smoker': 'No', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '32.0', 'capital_lat': '38.9072', 'capital_lon': '-77.0369'}}
+    )
+    ==
+    {49:7,59:10,18:32}
+    """
     dicc_cant_fechas = {}
 
     for paciente in pacientes.values():
@@ -337,11 +429,23 @@ def guardar_datos(pacientes):
         dicc_cant_fechas[promedios] =  dicc_cant_fechas[promedios]["suma_dias"]//dicc_cant_fechas[promedios]["contador"]
     return dict(sorted(dicc_cant_fechas.items()))
 
-def obtener_edades_y_promedios(edad, promedios):
+def obtener_edades_y_promedios(edad:int, promedios:dict)->tuple:
     """
-    Devuelve dos listas:
-    - edades: la edad seleccionada ±2 (si existen en el diccionario)
-    - dias: los promedios correspondientes a esas edades
+    datos reales pasados a la maquina:
+    edad de la persona:int
+    dias promedio de recuperación:dict
+    valores de dias y promedios:tuple(list,list)
+    proposito:
+    nuestra función recibe un diccionario con los valores promedios y una edad dada,
+    con esta la utiliza como clave en un recorrido para generar la lista de valores
+    comparativos entre dos valores anteriores y dos posteriores, asegurandose que 
+    este valor se encuentre en el diccionario para mostrar el promedio y las edades respectivas
+    que compara, generando una lista con las edades que seran 5 valores, como uno con 5 valores
+    de promedio.
+    obtener_edades(21,{19:12,20:16,21:25,22:30,23:9})==([19,20,21,22,23],[12,16,25,30,9])
+    obtener_edades(18,{18:9,19:29,20:10,21:4,22:7})==([18,19,20],[9,29,10])
+    obtener_edades(90,{87:15,88:0,89:11,90:10})==([88,89,90],[0,11,10])
+    obtener_edades(30,{})==([],[])
     """
     edades = []
     dias = []
@@ -368,6 +472,62 @@ def mostrar_grafico_recuperacion(edad,promedios):
     ax.set_ylabel("Promedio de días",color="white")
     ax.set_ylim(14, 30)
     return fig
+
+
+#_________________________________________________________________________________________________________
+#FUNCIONES DE PREGUNTA 6(DINÁMICA):
+#PREGUNTA:
+#¿QUÉ PAÍS ES EL QUE TIENE MÁS DENSIDAD DE EFECTOS SECUNDARIOS Y FATALES? 
+#SOLUCIÓN:
+#SE CONSIDERO LA CREACIÓN DE UN MAPA MUNDIAL QUE NOS MUESTRE POR PANTALLA CADA PAIS CON LOS PACIENTES MARCADOS EN EL
+#MAPA, COMO UNA INTERFAZ CON LOS CASOS GRAVES Y FATALES, PUDIENDO SELECCIONAR POR MEDIO DE UAN INTERFAZ EL PAIS
+#QUE SE DESEA VER EN EL MAPA, PUDIENDO TAMBIEN DESPLAZARSE POR ESTE.
+#
+
+def ubicacion_pacientes(pacientes,pais):
+    """pacientes:diccionarios
+       pais:str
+       dado todos los pacientes y un pais devuelve una lista de dicc que tiene como clave lat y lon y 
+       como valor las coordenadas del paciente de ese pais """
+
+    cordenadas = []
+    for paciente in pacientes.values():
+        if paciente["country"] == pais:
+
+            cordenadas.append({"lat" : float(paciente["capital_lat"]),
+                           "lon" : float(paciente["capital_lon"])})
+    
+    return cordenadas
+
+def contar_casos_graves(pacientes, pais):
+    """
+    datos del paciente:dict
+    pais origen:str
+    nuestra función recibe el diccionario y se queda con los 
+    valores de pais severidad y recuperación del paciente,
+    con estos calcula dado el pais recibido por la selección
+    del usuario devolviendo una tupla con la cantidad de casos
+    fatales y casos severos"""
+
+    severos = 0
+    fatales = 0
+
+    for paciente in pacientes.values():
+
+        if paciente["country"] == pais:
+
+            if paciente["severity"] == "Severe":
+                severos += 1
+
+                if paciente["outcome"] == "Fatal":
+                    fatales += 1
+            elif paciente["outcome"] == "Fatal":
+                    fatales += 1
+    return severos, fatales
+
+
+#_______________________________________________________________________________________________
+#FUNCIÓN MAIN LLAMADA DE NUESTRO PROGRAMA CON TODAS LAS PREGUNTAS
 
 def main():
     pacientes = leer_archivo()
@@ -428,5 +588,5 @@ def main():
         st.pyplot(fig3)
 
 if __name__=="__main__":
-    main()
+     main()
  
