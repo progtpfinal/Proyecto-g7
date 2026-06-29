@@ -63,7 +63,14 @@ def contar_pacientes_por_fecha(pacientes:dict)->dict: #funcion refactorizada eli
     y nos devuelve un diccionario con todas las fechas ingresadas como claves en este,
     y sus respectivas cantidades de pacientes como datos de cada fecha, además
     tras obtener todas las fechas devuelve un diccionario ordenado con las fechas.
-    """
+    contar_pacientes_por_fecha(
+    {'PT-132440': {'age': '18', 'gender': 'Male', 'country': 'Canada', 'drug_name': 'Metformin', 'dosage_mg': '20', 'side_effect': 'Diarrhea', 'severity': 'Moderate', 'outcome': 'Hospitalized', 'report_date': '2021-10-30', 'treatment_start_date': '2021-09-12', 'chronic_condition': 'Kidney Disease', 'smoker': 'Yes', 'alcohol_use': 'Occasional', 'hospitalized': 'Yes', 'recovery_days': '', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'},
+    'PT-117372': {'age': '76', 'gender': 'Female', 'country': 'Germany', 'drug_name': 'Lisinopril', 'dosage_mg': '20', 'side_effect': 'Fatigue', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2025-01-25', 'treatment_start_date': '2024-12-02', 'chronic_condition': 'Hypertension', 'smoker': 'Yes', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '33.0', 'capital_lat': '52.52', 'capital_lon': '13.405'}, 
+    'PT-153905': {'age': '36', 'gender': 'Female', 'country': 'Canada', 'drug_name': 'Paracetamol', 'dosage_mg': '100', 'side_effect': 'Liver Toxicity', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2022-01-24', 'treatment_start_date': '2021-12-17', 'chronic_condition': 'Hypertension', 'smoker': 'No', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '30.0', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'}, 
+    'PT-138339': {'age': '50', 'gender': 'Male', 'country': 'Pakistan', 'drug_name': 'Amoxicillin', 'dosage_mg': '250', 'side_effect': 'Diarrhea', 'severity': 'Moderate', 'outcome': 'Hospitalized', 'report_date': '2022-11-03', 'treatment_start_date': '2022-09-07', 'chronic_condition': 'Kidney Disease', 'smoker': 'Yes', 'alcohol_use': '', 'hospitalized': 'Yes', 'recovery_days': '', 'capital_lat': '33.6844', 'capital_lon': '73.0479'}
+    })
+    ==
+    {'2021-09-12':1,'2022-09-07':1,'2021-12-17':1,'2024-12-02':1}"""
     dicc_cant_fechas = {} 
 
     for paciente in pacientes.values():
@@ -136,7 +143,18 @@ def calcular_Porcentaje(medicamento:str,pacientes:dict)->dict:
     proposito:
     recibe un diccionario y un medicamento y devuelve un diccionario que 
     contiene los efectos secundarios del medicamento recibido como clave
-    y como valor tiene los porcentajes de cada uno de estos efectos secundarios."""
+    y como valor tiene los porcentajes de cada uno de estos efectos secundarios.
+    calcular_porcentaje(
+    'Ibuprofen',{
+    'PT-169877': {'age': '48', 'gender': 'Male', 'country': 'Germany', 'drug_name': 'Metformin', 'dosage_mg': '250', 'side_effect': 'Nausea', 'severity': 'Moderate', 'outcome': 'Recovering', 'report_date': '2023-05-11', 'treatment_start_date': '2023-05-05', 'chronic_condition': 'Kidney Disease', 'smoker': 'Yes', 'alcohol_use': 'Occasional', 'hospitalized': 'No', 'recovery_days': '27.0', 'capital_lat': '52.52', 'capital_lon': '13.405'}, 
+    'PT-100457': {'age': '90', 'gender': 'Female', 'country': 'Canada', 'drug_name': 'Lisinopril', 'dosage_mg': '10', 'side_effect': 'Dizziness', 'severity': 'Moderate', 'outcome': 'Recovering', 'report_date': '2025-01-23', 'treatment_start_date': '2024-11-27', 'chronic_condition': '', 'smoker': 'No', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '6.0', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'},
+    'PT-171214': {'age': '52', 'gender': 'Female', 'country': 'USA', 'drug_name': 'Insulin', 'dosage_mg': '100', 'side_effect': 'Sweating', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2021-10-30', 'treatment_start_date': '2021-10-20', 'chronic_condition': '', 'smoker': 'Yes', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '43.0', 'capital_lat': '38.9072', 'capital_lon': '-77.0369'}, 
+    'PT-146920': {'age': '18', 'gender': 'Male', 'country': 'Canada', 'drug_name': 'Ibuprofen', 'dosage_mg': '20', 'side_effect': 'Heartburn', 'severity': 'Mild', 'outcome': 'Recovering', 'report_date': '2022-07-31', 'treatment_start_date': '2022-06-20', 'chronic_condition': 'Diabetes', 'smoker': 'Yes', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '29.0', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'},
+    'PT-186635': {'age': '79', 'gender': 'Male', 'country': 'Canada', 'drug_name': 'Ibuprofen', 'dosage_mg': '25', 'side_effect': 'Nausea', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2024-06-22', 'treatment_start_date': '2024-06-21', 'chronic_condition': 'Hypertension', 'smoker': 'No', 'alcohol_use': 'Occasional', 'hospitalized': 'No', 'recovery_days': '9.0', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'}}
+    )
+    =={'Heartburn':50,'Nausea':50}
+
+    """
     total=0 #cant de pacientes que tomaron ese medicamento
     efectos={}#un dicc tiene como clave los efectos secund y como valor la cant de pacientes con ese efecto secund  
     for paciente in pacientes.values():
@@ -288,7 +306,14 @@ def contar_hospitalizados_por_dosis(pacientes: dict)->dict:
     acorde el medicamento, la dosis y el estado la cantidad de personas
     que padecen de condiciones similares, verificando si esta hospitalizado
     para contarlo como valido.
-    """
+    contar_hospitalizados_por_dosis({
+    'PT-148763': {'age': '39', 'gender': 'Male', 'country': 'UK', 'drug_name': 'Lisinopril', 'dosage_mg': '10', 'side_effect': 'Fatigue', 'severity': 'Severe', 'outcome': 'Recovered', 'report_date': '2025-06-17', 'treatment_start_date': '2025-05-25', 'chronic_condition': 'Kidney Disease', 'smoker': 'Yes', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '5.0', 'capital_lat': '51.5074', 'capital_lon': '-0.1278'}, 
+    'PT-166719': {'age': '59', 'gender': 'Female', 'country': 'Pakistan', 'drug_name': 'Insulin', 'dosage_mg': '100', 'side_effect': 'Weight Gain', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2022-07-19', 'treatment_start_date': '2022-06-01', 'chronic_condition': 'Heart Disease', 'smoker': 'Yes', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '22.0', 'capital_lat': '33.6844', 'capital_lon': '73.0479'}, 
+    'PT-126322': {'age': '56', 'gender': 'Female', 'country': 'USA', 'drug_name': 'Omeprazole', 'dosage_mg': '50', 'side_effect': 'Headache', 'severity': 'Mild', 'outcome': 'Recovering', 'report_date': '2026-04-22', 'treatment_start_date': '2026-03-31', 'chronic_condition': '', 'smoker': 'Yes', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '7.0', 'capital_lat': '38.9072', 'capital_lon': '-77.0369'}, 
+    'PT-106537': {'age': '52', 'gender': 'Male', 'country': 'Germany', 'drug_name': 'Omeprazole', 'dosage_mg': '10', 'side_effect': 'Fatigue', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2022-11-28', 'treatment_start_date': '2022-10-05', 'chronic_condition': '', 'smoker': 'Yes', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '43.0', 'capital_lat': '52.52', 'capital_lon': '13.405'}})
+     'PT-182714': {'age': '28', 'gender': 'Male', 'country': 'India', 'drug_name': 'Lisinopril', 'dosage_mg': '250', 'side_effect': 'Dizziness', 'severity': 'Moderate', 'outcome': 'Hospitalized', 'report_date': '2023-09-06', 'treatment_start_date': '2023-08-11', 'chronic_condition': 'Asthma', 'smoker': 'Yes', 'alcohol_use': '', 'hospitalized': 'Yes', 'recovery_days': '', 'capital_lat': '28.6139', 'capital_lon': '77.209'}
+    ==
+    {'Lisinopril':{'250'}}"""
     
     resultados = {}
 
@@ -319,7 +344,7 @@ def graficar_dosis_por_medicamento(resultados: dict):
     por dosis un gráfico de dispersión de puntos, que en base a la cantidad de
     personas que tengan esas condiciones dado el medicamento y esa dosis el 
     tamaño del punto generado en la grafica.
-    
+
     Scatter plot:
     - eje x: medicamento
     - eje y: dosis (mg)
@@ -484,12 +509,17 @@ def mostrar_grafico_recuperacion(edad,promedios):
 #QUE SE DESEA VER EN EL MAPA, PUDIENDO TAMBIEN DESPLAZARSE POR ESTE.
 #
 
-def ubicacion_pacientes(pacientes,pais):
+def ubicacion_pacientes(pacientes:dict,pais:str)->list:
     """pacientes:diccionarios
        pais:str
        dado todos los pacientes y un pais devuelve una lista de dicc que tiene como clave lat y lon y 
-       como valor las coordenadas del paciente de ese pais """
-
+       como valor las coordenadas del paciente de ese pais.
+        ubicacion_pacientes('PT-120770': {'age': '37', 'gender': 'Male', 'country': 'UK', 'drug_name': 'Atorvastatin', 'dosage_mg': '100', 'side_effect': 'Muscle Pain', 'severity': 'Moderate', 'outcome': 'Recovered', 'report_date': '2024-04-12', 'treatment_start_date': '2024-03-28', 'chronic_condition': 'Diabetes', 'smoker': 'Yes', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '9.0', 'capital_lat': '51.5074', 'capital_lon': '-0.1278'}, 
+        'PT-176074': {'age': '65', 'gender': 'Male', 'country': 'Germany', 'drug_name': 'Ibuprofen', 'dosage_mg': '10', 'side_effect': 'Nausea', 'severity': 'Moderate', 'outcome': 'Hospitalized', 'report_date': '2024-11-10', 'treatment_start_date': '2024-09-13', 'chronic_condition': 'Kidney Disease', 'smoker': 'No', 'alcohol_use': 'Occasional', 'hospitalized': 'Yes', 'recovery_days': '', 'capital_lat': '52.52', 'capital_lon': '13.405'}, 'PT-158869': {'age': '57', 'gender': 'Female', 'country': 'USA', 'drug_name': 'Sertraline', 'dosage_mg': '25', 'side_effect': 'Insomnia', 'severity': 'Moderate', 'outcome': 'Recovering', 'report_date': '2024-06-21', 'treatment_start_date': '2024-05-03', 'chronic_condition': 'Diabetes', 'smoker': 'Yes', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '3.0', 'capital_lat': '38.9072', 'capital_lon': '-77.0369'},
+        'PT-116884': {'age': '31', 'gender': 'Female', 'country': 'Canada', 'drug_name': 'Amoxicillin', 'dosage_mg': '5', 'side_effect': 'Rash', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2026-04-27', 'treatment_start_date': '2026-03-07', 'chronic_condition': 'Kidney Disease', 'smoker': 'Yes', 'alcohol_use': 'Occasional', 'hospitalized': 'No', 'recovery_days': '24.0', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'}
+        ,UK)
+        ==
+        ['51.5074','-0.1278']"""   
     cordenadas = []
     for paciente in pacientes.values():
         if paciente["country"] == pais:
@@ -507,7 +537,15 @@ def contar_casos_graves(pacientes, pais):
     valores de pais severidad y recuperación del paciente,
     con estos calcula dado el pais recibido por la selección
     del usuario devolviendo una tupla con la cantidad de casos
-    fatales y casos severos"""
+    fatales y casos severos
+    contar_casos_graves(
+    {'PT-171202': {'age': '18', 'gender': 'Female', 'country': 'Canada', 'drug_name': 'Ibuprofen', 'dosage_mg': '25', 'side_effect': 'Stomach Pain', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2022-10-15', 'treatment_start_date': '2022-09-21', 'chronic_condition': '', 'smoker': 'No', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '2.0', 'capital_lat': '45.4215', 'capital_lon': '-75.6972'}, 
+    'PT-168852': {'age': '45', 'gender': 'Male', 'country': 'Australia', 'drug_name': 'Metformin', 'dosage_mg': '10', 'side_effect': 'Diarrhea', 'severity': 'Moderate', 'outcome': 'Recovering', 'report_date': '2024-07-03', 'treatment_start_date': '2024-06-05', 'chronic_condition': 'Diabetes', 'smoker': 'No', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '18.0', 'capital_lat': '-35.2809', 'capital_lon': '149.13'},
+    'PT-109351': {'age': '47', 'gender': 'Male', 'country': 'USA', 'drug_name': 'Lisinopril', 'dosage_mg': '50', 'side_effect': 'Dizziness', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2026-03-26', 'treatment_start_date': '2026-02-02', 'chronic_condition': 'Hypertension', 'smoker': 'No', 'alcohol_use': 'Frequent', 'hospitalized': 'No', 'recovery_days': '13.0', 'capital_lat': '38.9072', 'capital_lon': '-77.0369'}, 
+    'PT-154167': {'age': '71', 'gender': 'Male', 'country': 'Australia', 'drug_name': 'Lisinopril', 'dosage_mg': '250', 'side_effect': 'Fatigue', 'severity': 'Mild', 'outcome': 'Recovered', 'report_date': '2022-09-18', 'treatment_start_date': '2022-08-10', 'chronic_condition': 'Heart Disease', 'smoker': 'No', 'alcohol_use': '', 'hospitalized': 'No', 'recovery_days': '6.0', 'capital_lat': '-35.2809', 'capital_lon': '149.13'}
+    },Australia)
+    ==
+    (0,0)"""
 
     severos = 0
     fatales = 0
