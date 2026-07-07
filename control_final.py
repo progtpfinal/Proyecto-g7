@@ -46,7 +46,6 @@ def leer_archivo()->dict:
     return pacientes
 
 #_________________________________________________________________________________________________________
-
 #FUNCIONES DE PREGUNTA 1(ESTÁTICA):
 #PREGUNTA:
 #¿QUÉ DÍA HUBO MÁS PERSONAS INICIANDO EL TRATAMIENTO?  
