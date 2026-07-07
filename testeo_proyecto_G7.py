@@ -1,4 +1,9 @@
 from prueba_control_4 import *
+#testeo de pregunta 1:
+
+
+
+
 
 
 #testeos de pregunta 6:
